@@ -1,0 +1,4 @@
+Wildcard ssl 발급
+
+sudo certbot certonly --manual --preferred-challenges=dns --email \ jungu0416@naver.com  --server https://acme-v02.api.letsencrypt.org/directory  --agree-tos -d potatoo.dev -d \*.potatoo.dev
+ 
