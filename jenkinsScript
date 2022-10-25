@@ -1,0 +1,56 @@
+def javaHome
+def buildEnv
+def gradleTool
+
+node {
+    try {
+    	stage('Ready') {
+    		echo "Current Build Server : PROD SERVER WAS1 : http://210.94.161.54 WAS2 : http://210.94.161.60 "
+    	}    	
+        stage('Checkout') {
+            checkout scm
+        }
+        stage('Environment') {
+        	buildEnv = "prod"
+        	javaHome = tool 'JAVA_HOME'
+        	gradleTool = tool 'GRADLE_HOME'
+        }
+        stage('Gradle Build') {
+        	sh "chmod 777 gradlew"
+		    sh "${gradleTool}/bin/gradle --version"
+	        sh "${gradleTool}/bin/gradle clean build -Dorg.gradle.java.home=${javaHome}"
+	        echo "Gradle Build Compelete"
+		}
+        stage('Archive') {
+        	archive '**/build/*.war'
+        }
+        stage('WAS1 Deploy') {
+        	sshagent(credentials: ['prod_server_ip54']) {
+	        	sh 'ssh -p 2222 -o StrictHostKeyChecking=no resin@210.94.161.54 uptime'
+		        sh 'scp -P 2222 -r build/libs/DGU_MOBILE_PROD-0.0.1-SNAPSHOT.war resin@210.94.161.54:/was/resin4/webapps/ROOT'
+		        sh 'ssh -p 2222 resin@210.94.161.54 "sh /home/dongguk/shellScript/deployMobileProd.sh"'
+		    }
+        }
+        stage('WAS1 Check') {
+        	sshagent(credentials: ['prod_server_ip54']) {
+        		sh 'ssh -p 2222 -o StrictHostKeyChecking=no resin@210.94.161.54 uptime'
+        		sh 'ssh -p 2222 resin@210.94.161.54 "sh /home/dongguk/shellScript/prodIp54Check.sh"'
+        	}
+        }
+        stage('WAS2 Deploy') {
+        	sshagent(credentials: ['prod_server_ip60']) {
+        		sh 'ssh -p 2222 -o StrictHostKeyChecking=no resin@210.94.161.60 uptime'
+		        sh 'scp -P 2222 -r build/libs/DGU_MOBILE_PROD-0.0.1-SNAPSHOT.war resin@210.94.161.60:/was/resin4/webapps/ROOT'
+		        sh 'ssh -p 2222 resin@210.94.161.60 "sh /home/dongguk/shellScript/deployMobileProd.sh"'
+	         }
+        }
+        stage('WAS2 Check') {
+        	sshagent(credentials: ['prod_server_ip60']) {
+        		sh 'ssh -p 2222 -o StrictHostKeyChecking=no resin@210.94.161.60 uptime'
+        		sh 'ssh -p 2222 resin@210.94.161.60 "sh /home/dongguk/shellScript/prodIp60Check.sh"'
+        	}
+        }
+    } catch (err) {
+        throw err
+    }
+}
