@@ -1,0 +1,4 @@
+docker run -v `pwd`:/etc python:3.8-alpine cat /etc/test.txt
+ㄴ 바인드 마운트
+
+도커 바인드마운트랑 볼륨이랑 다름
