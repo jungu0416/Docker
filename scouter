@@ -1,0 +1,15 @@
+wget https://github.com/scouter-project/scouter/releases/download/v2.12.0.1.SNAPSHOT/scouter-all-2.12.0.1.SNAPSHOT.tar.gz
+
+tar -xvf scouter-all-2.12.0.1.SNAPSHOT.tar.gz 
+
+
+-- 서버
+ cd /scouter설치경로/server
+ ./startup.sh
+
+
+-- 호스트 | OS
+ scouter/agent.host/conf 
+ 
+-- Application
+ java.agent
