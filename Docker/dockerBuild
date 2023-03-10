@@ -1,0 +1,2 @@
+docker build "path" -t "imageName"
+docker run "imageName"
