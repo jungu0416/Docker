@@ -1,0 +1,9 @@
+git clone --bare https://github.com/exampleuser/old-repository.git
+cd old-repository
+git push --mirror https://github.com/exampleuser/new-repository.git
+
+-------------
+--bare 와 --mirror 차이 확인
+
+https://docs.github.com/en/repositories/creating-and-managing-repositories/duplicating-a-repository
+https://stackoverflow.com/questions/34265266/remote-rejected-errors-after-mirroring-a-git-repository
