@@ -2,3 +2,9 @@ docker build "path" -t "imageName"
 docker run -p 외부포트:내부포트 "imageName"
 
 -d  는 백그라운드
+
+--삭제
+
+docker stop e373039ec5e0 
+docker remove e373039ec5e0
+docker rmi a47b4ebd797b
