@@ -1,7 +1,12 @@
 docker build "path" -t "imageName"
-docker run -p 외부포트:내부포트 "imageName"
 
--d  는 백그라운드
+
+1. docker run -p 외부포트:내부포트 "imageName"
+    -d  는 백그라운드
+
+2. sudo docker run -d --network host profile
+   docker network를 host로 할 것이라면 2번 방법을 사용.
+
 
 --삭제
 
